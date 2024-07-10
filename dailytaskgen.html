@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Task Generator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        p {
+            font-size: 1.25rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        input {
+            width: 80%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f9f9f9;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li.completed {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .check-btn {
+            background-color: #ffc107;
+            color: #fff;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .check-btn:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Daily Task Generator</h1>
+        <p id="task">Click the button to get your daily task!</p>
+        <button onclick="generateTask()">Get Task</button>
+        <hr>
+        <h2>Add Your Own Task</h2>
+        <input type="text" id="new-task" placeholder="Enter your task here">
+        <button onclick="addTask()">Add Task</button>
+        <h2>Your Tasks</h2>
+        <ul id="task-list"></ul>
+    </div>
+    <script>
+        const tasks = [
+            "Review your monthly budget and adjust for any unexpected expenses.",
+            "Engage with 10 customers on social media and respond to their comments.",
+            "Send a follow-up email to potential clients you met this week.",
+            "Evaluate your current marketing strategy and identify areas for improvement.",
+            "Organize your workspace to improve efficiency and productivity.",
+            "Analyze your sales data and identify trends or patterns.",
+            "Plan a team meeting to discuss upcoming projects and goals.",
+            "Update your business website with new content or features.",
+            "Reach out to a business mentor or advisor for advice.",
+            "Review your inventory and place orders for low-stock items.",
+            "Create a promotional offer to attract new customers.",
+            "Evaluate your customer service processes and make improvements.",
+            "Research new tools or software that could benefit your business.",
+            "Network with other small business owners in your community.",
+            "Set up a feedback system to gather insights from customers."
+        ];
+
+        function generateTask() {
+            const randomIndex = Math.floor(Math.random() * tasks.length);
+            document.getElementById('task').innerText = tasks[randomIndex];
+        }
+
+        function addTask() {
+            const newTaskInput = document.getElementById('new-task');
+            const newTask = newTaskInput.value.trim();
+            if (newTask) {
+                tasks.push(newTask);
+                displayTask(newTask);
+                newTaskInput.value = '';
+                alert('Task added successfully!');
+            } else {
+                alert('Please enter a task.');
+            }
+        }
+
+        function displayTask(task) {
+            const taskList = document.getElementById('task-list');
+            const taskItem = document.createElement('li');
+            taskItem.textContent = task;
+
+            const checkBtn = document.createElement('button');
+            checkBtn.textContent = '✔';
+            checkBtn.className = 'check-btn';
+            checkBtn.onclick = () => {
+                taskItem.classList.toggle('completed');
+            };
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '✖';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.onclick = () => {
+                taskList.removeChild(taskItem);
+                const taskIndex = tasks.indexOf(task);
+                if (taskIndex > -1) {
+                    tasks.splice(taskIndex, 1);
+                }
+            };
+
+            taskItem.appendChild(checkBtn);
+            taskItem.appendChild(deleteBtn);
+            taskList.appendChild(taskItem);
+        }
+    </script>
+</body>
+</html>

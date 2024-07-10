@@ -13,6 +13,8 @@
             background-color: #f0f8ff;
             font-family: Arial, sans-serif;
             margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
         }
         .container {
             background-color: #ffffff;
@@ -21,7 +23,10 @@
             border-radius: 8px;
             text-align: center;
             max-width: 400px;
-            width: 90%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         h1 {
             font-size: 2rem;
@@ -39,6 +44,7 @@
             margin-bottom: 1rem;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
         button {
             background-color: #28a745;
@@ -49,6 +55,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin: 0.5rem 0;
         }
         button:hover {
             background-color: #218838;
@@ -56,6 +63,8 @@
         ul {
             list-style-type: none;
             padding: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
         li {
             background-color: #f9f9f9;
@@ -71,15 +80,17 @@
             text-decoration: line-through;
             color: #aaa;
         }
-        .delete-btn {
-            background-color: #dc3545;
-            color: #fff;
+        .delete-btn, .check-btn {
             border: none;
             padding: 0.25rem 0.5rem;
             font-size: 0.75rem;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: #fff;
         }
         .delete-btn:hover {
             background-color: #c82333;
@@ -87,12 +98,6 @@
         .check-btn {
             background-color: #ffc107;
             color: #fff;
-            border: none;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
         }
         .check-btn:hover {
             background-color: #e0a800;
@@ -112,23 +117,22 @@
         <ul id="task-list"></ul>
     </div>
     <script>
-        const tasks = [
+        const defaultTasks = [
             "Review your monthly budget and adjust for any unexpected expenses.",
             "Engage with 10 customers on social media and respond to their comments.",
-            "Send a follow-up email to potential clients you met this week.",
-            "Evaluate your current marketing strategy and identify areas for improvement.",
-            "Organize your workspace to improve efficiency and productivity.",
-            "Analyze your sales data and identify trends or patterns.",
-            "Plan a team meeting to discuss upcoming projects and goals.",
-            "Update your business website with new content or features.",
-            "Reach out to a business mentor or advisor for advice.",
-            "Review your inventory and place orders for low-stock items.",
-            "Create a promotional offer to attract new customers.",
-            "Evaluate your customer service processes and make improvements.",
-            "Research new tools or software that could benefit your business.",
-            "Network with other small business owners in your community.",
-            "Set up a feedback system to gather insights from customers."
+            
         ];
+
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function loadTasks() {
+            const savedTasks = localStorage.getItem('tasks');
+            return savedTasks ? JSON.parse(savedTasks) : defaultTasks.slice();
+        }
+
+        const tasks = loadTasks();
 
         function generateTask() {
             const randomIndex = Math.floor(Math.random() * tasks.length);
@@ -141,6 +145,7 @@
             if (newTask) {
                 tasks.push(newTask);
                 displayTask(newTask);
+                saveTasks();
                 newTaskInput.value = '';
                 alert('Task added successfully!');
             } else {
@@ -158,6 +163,7 @@
             checkBtn.className = 'check-btn';
             checkBtn.onclick = () => {
                 taskItem.classList.toggle('completed');
+                saveTasks();
             };
 
             const deleteBtn = document.createElement('button');
@@ -168,6 +174,7 @@
                 const taskIndex = tasks.indexOf(task);
                 if (taskIndex > -1) {
                     tasks.splice(taskIndex, 1);
+                    saveTasks();
                 }
             };
 
@@ -175,6 +182,12 @@
             taskItem.appendChild(deleteBtn);
             taskList.appendChild(taskItem);
         }
+
+        function loadAndDisplayTasks() {
+            tasks.forEach(task => displayTask(task));
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAndDisplayTasks);
     </script>
 </body>
 </html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote Generator</title>
+</head>
+<body>
+    <h1>Random Quote Generator</h1>
+    <p id="quote"></p>
+    <script>
+        const quotes = [
+            "Quote 1",
+            "Quote 2",
+            "Quote 3",
+            "Quote 4",
+            "Quote 5"
+        ];
+
+        function getRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+        }
+
+        document.getElementById('quote').innerText = getRandomQuote();
+    </script>
+</body>
+</html>
